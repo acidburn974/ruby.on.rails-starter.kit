@@ -23,7 +23,7 @@ share the ``./project`` folder. Then generate a new project using rails (``gem i
 Or you can use the ``./project/setup.sh`` script using a single command. This script download NodeJS, Yarn and RoR then will generate a new rails application in /usr/src/app which is mounted in ``./project`` on host.
 
 ```
-docker run --rm --name ruby -v ${PWD}/project:/usr/src/app -w /usr/src/app jruby:9.2 \
+docker run --rm --name ruby -v ${PWD}/project:/usr/src/app -w /usr/src/app ruby:2.7-buster \
 bash /usr/src/app/setup.sh
 ```
 

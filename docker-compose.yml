@@ -27,7 +27,7 @@ services:
     volumes:
       - "./project:/usr/src/app"
     ports:
-      - '8000:8000'
+      - '3000:3000'
     networks:
       - default
       - mariadb_default
