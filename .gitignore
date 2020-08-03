@@ -33,4 +33,4 @@
 /project/node_modules
 /mysql
 
-.toctocwork_rails.sublime-workspace
+**/*.DS_Store
