@@ -1,20 +1,30 @@
 version: '3'
 
+volumes:
+  mariadb-data:
+  gem-home:
+
+networks:
+  default:
+  #database:
+  #  external: true
+
 services:
   mariadb:
     image: mariadb:10.4
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=project_development
-      - MYSQL_USER=project
-      - MYSQL_PASSWORD=project
+      - MYSQL_DATABASE=app_development
+      - MYSQL_USER=app
+      - MYSQL_PASSWORD=app
     volumes:
-      - ./mysql:/var/lib/mysql
+      - mariadb-data:/var/lib/mysql
+      #- ./mysql:/var/lib/mysql
     ports:
       - "3306:3306"
     networks:
       - default
-      - mariadb_default
+      #- database
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
     # command: mysqld --innodb-flush-method=littlesync --innodb-use-native-aio=OFF --log_bin=ON
 
@@ -25,14 +35,12 @@ services:
     environment:
       - "RAILS_ENV=development"
     volumes:
-      - "./project:/usr/src/app"
+      - ./project:/usr/src/app
+      - gem-home:/usr/local/bundle
     ports:
       - '3000:3000'
     networks:
       - default
-      - mariadb_default
+      #- database
     # command: 
 
-networks:
-  default:
-  mariadb_default:

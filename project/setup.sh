@@ -1,17 +1,30 @@
 #!/bin/bash
-# This script seutp a new rails application in /usr/src/app directory
+# This script setup a new rails application in /usr/src/app directory of the container
 # Do not use this script in production
 
-curl https://deb.nodesource.com/setup_12.x | bash && \
-	curl https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-	echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+# update and install compilation tools
+apt-get update -qq && apt-get install -y build-essential apt-transport-https ca-certificates curl
 
+# for mariadb
+apt-get install -y libmariadbd-dev mariadb-client
 
-apt-get update && \
-	apt-get install -y --no-install-recommends \
-	mariadb-client libmariadbd-dev nodejs yarn sudo apt-transport-https ca-certificates tzdata ruby-tzinfo && \
-	rm -rf /var/lib/apt/lists/*
+# for nokogiri
+apt-get install -y libxml2-dev libxslt1-dev
 
+# for capybara-webkit
+apt-get install -y libqtwebkit4 libqt4-dev xvfb
+
+# for a latest JS runtime
+curl -sL https://deb.nodesource.com/setup_lts.x | bash
+
+# install nodejs
+apt-get install -y nodejs
+
+# install yarn globally from nodejs
+npm install -g yarn
+
+# install ruby gem for rails installation
 gem install rails
 
-rails new /usr/src/app -f --skip-test --webpack --database=mysql
+# generate a new rails 
+rails new /usr/src/app -f --webpack --database=mysql
