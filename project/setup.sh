@@ -3,7 +3,7 @@
 # Do not use this script in production
 
 # update and install compilation tools
-apt-get update -qq && apt-get install -y build-essential apt-transport-https ca-certificates curl lsb-release ruby-tzinfo
+apt-get update -qq && apt-get install -y build-essential apt-transport-https ca-certificates curl lsb-release tzdata ruby-tzinfo
 
 # for mariadb
 apt-get install -y libmariadbd-dev mariadb-client

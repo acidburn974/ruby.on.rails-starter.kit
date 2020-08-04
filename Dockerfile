@@ -1,7 +1,7 @@
 FROM jruby:9.2
 
 # install compilation tools
-RUN apt-get update -qq && apt-get install -y build-essential apt-transport-https ca-certificates curl lsb-release
+RUN apt-get update -qq && apt-get install -y build-essential apt-transport-https ca-certificates curl lsb-release tzdata ruby-tzinfo
 
 # for mariadb
 RUN apt-get install -y libmariadbd-dev mariadb-client
