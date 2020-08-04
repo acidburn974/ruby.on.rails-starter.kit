@@ -35,7 +35,7 @@ COPY ./project/Gemfile.lock /usr/src/app/Gemfile.lock
 
 # install gems
 # RUN jruby -S gem install rails activerecord-jdbcmysql-adapter bindex
-RUN bundle install
+RUN jruby -S bundle install
 
 # copy entrypoint script to container
 COPY entrypoint.sh /usr/bin/entrypoint.sh

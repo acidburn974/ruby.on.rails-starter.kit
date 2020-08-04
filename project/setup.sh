@@ -7,7 +7,7 @@ apt-get update -qq && apt-get install -y build-essential apt-transport-https ca-
 
 # for mariadb
 apt-get install -y libmariadbd-dev mariadb-client
-
+w
 # for nokogiri
 apt-get install -y libxml2-dev libxslt1-dev
 
