@@ -3,7 +3,7 @@
 # Do not use this script in production
 
 # update and install compilation tools
-apt-get update -qq && apt-get install -y build-essential apt-transport-https ca-certificates curl
+apt-get update -qq && apt-get install -y build-essential apt-transport-https ca-certificates curl lsb-release
 
 # for mariadb
 apt-get install -y libmariadbd-dev mariadb-client
@@ -18,10 +18,10 @@ apt-get install -y libqtwebkit4 libqt4-dev xvfb
 curl -sL https://deb.nodesource.com/setup_lts.x | bash
 
 # install nodejs
-apt-get install -y nodejs
+apt-get update && apt-get install -y nodejs
 
 # install yarn globally from nodejs
-npm install -g yarn
+npm install -g yarn && yarn -v 
 
 # install ruby gem for rails installation
 gem install rails

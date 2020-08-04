@@ -1,7 +1,7 @@
 FROM ruby:2.7-buster
 
 # install compilation tools
-RUN apt-get update -qq && apt-get install -y build-essential
+RUN apt-get update -qq && apt-get install -y build-essential apt-transport-https ca-certificates curl lsb-release tzdata ruby-tzinfo
 
 # for mariadb
 RUN apt-get install -y libmariadbd-dev mariadb-client
@@ -13,13 +13,13 @@ RUN apt-get install -y libxml2-dev libxslt1-dev
 RUN apt-get install -y libqtwebkit4 libqt4-dev xvfb
 
 # for a latest JS runtime
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash
+RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash
 
 # install nodejs
 RUN apt-get install -y nodejs
 
 # install yarn globally from nodejs
-RUN npm install -g yarn
+RUN npm install -g yarn && yarn -v
 
 # create the directory
 RUN mkdir /usr/src/app
@@ -33,8 +33,10 @@ COPY ./project/Gemfile /usr/src/app/Gemfile
 # copy Gemfile.lock
 COPY ./project/Gemfile.lock /usr/src/app/Gemfile.lock
 
+# install rails and dependencies
+RUN gem install rails 
+
 # install gems
-# RUN jruby -S gem install rails activerecord-jdbcmysql-adapter bindex
 RUN bundle install
 
 # copy entrypoint script to container
@@ -50,5 +52,4 @@ ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
 
 # start rails service
-# https://github.com/jruby/jruby/wiki/GettingStarted
 CMD ["rails", "server", "-b", "0.0.0.0"]
