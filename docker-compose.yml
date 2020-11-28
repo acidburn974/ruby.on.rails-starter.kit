@@ -1,46 +1,39 @@
 version: '3'
 
 volumes:
-  mariadb-data:
-  gem-home:
+  mariadb_data:
+  gem_home:
 
 networks:
   default:
-  #database:
-  #  external: true
 
 services:
   mariadb:
-    image: mariadb:10.4
+    image: mariadb:10.5
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=app_development
-      - MYSQL_USER=app
-      - MYSQL_PASSWORD=app
+      - MYSQL_DATABASE=project_development
+      - MYSQL_USER=project
+      - MYSQL_PASSWORD=project
     volumes:
-      - mariadb-data:/var/lib/mysql
-      #- ./mysql:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
+      #- ./mysql:/var/lib/mysql"
     ports:
-      - "3306:3306"
+      - 3306:3306
     networks:
       - default
-      #- database
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
-    # command: mysqld --innodb-flush-method=littlesync --innodb-use-native-aio=OFF --log_bin=ON
-
+    #command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
   rails:
     build:
       context: '.'
       dockerfile: 'Dockerfile'
     environment:
       - "RAILS_ENV=development"
+    env_file: .env
     volumes:
-      - ./project:/usr/src/app
-      - gem-home:/usr/local/bundle
+      - ./data/project:/usr/src/project
+      - gem_home:/usr/local/bundle
     ports:
-      - '3000:3000'
+      - 3000:3000 
     networks:
       - default
-      #- database
-    # command: 
-

@@ -1,0 +1,44 @@
+version: '3'
+
+volumes:
+  gem_home:
+
+networks:
+  web:
+    external: true
+  database:
+    external: true
+
+services:
+  rails:
+    build:
+      context: '.'
+      dockerfile: 'Dockerfile'
+    restart: unless-stopped
+    environment:
+      - "RAILS_ENV=production"
+    env_file: .env
+    volumes:
+      - ./data/project:/usr/src/project
+      - gem_home:/usr/local/bundle
+    networks:
+      - web
+      - database
+
+  nginx:
+    image: nginx:1.18
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=web"
+      - "traefik.port=80"
+      - "traefik.entryPoint=http"
+      - "traefik.backend=nginx"
+      - "traefik.frontend.rule=Host:myrootdomain.com"
+    volumes:
+      - ./data/nginx/:/etc/nginx/conf.d/
+      - ./data/project:/usr/src/project
+      - ./logs/nginx/:/var/log/nginx/
+    networks:
+      - web
+

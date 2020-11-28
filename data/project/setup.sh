@@ -1,6 +1,6 @@
 #!/bin/bash
-# This script setup a new rails application in /usr/src/app directory of the container
-# Do not use this script in production
+# This script setup a new rails application in /usr/src/project directory of the container
+# Do not use this script when your application is existing
 
 # update and install compilation tools
 apt-get update -qq && apt-get install -y build-essential apt-transport-https ca-certificates curl lsb-release tzdata ruby-tzinfo
@@ -27,4 +27,4 @@ npm install -g yarn && yarn -v
 gem install rails
 
 # generate a new rails 
-rails new /usr/src/app -f --webpack --database=mysql
+rails new -f --database=mysql /usr/src/project

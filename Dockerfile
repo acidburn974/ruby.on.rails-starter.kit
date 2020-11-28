@@ -22,16 +22,16 @@ RUN apt-get install -y nodejs
 RUN npm install -g yarn && yarn -v
 
 # create the directory
-RUN mkdir /usr/src/app
+RUN mkdir /usr/src/project
 
 # set it as working directory
-WORKDIR /usr/src/app
+WORKDIR /usr/src/project
 
 # copy Gemfile
-COPY ./project/Gemfile /usr/src/app/Gemfile
+COPY ./data/project/Gemfile /usr/src/project/Gemfile
 
 # copy Gemfile.lock
-COPY ./project/Gemfile.lock /usr/src/app/Gemfile.lock
+COPY ./data/project/Gemfile.lock /usr/src/project/Gemfile.lock
 
 # install rails and dependencies
 RUN gem install rails 
