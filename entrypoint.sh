@@ -2,18 +2,18 @@
 set -e
 
 # Remove a potentially pre-existing server.pid for Rails.
-FILE=/usr/src/app/tmp/pids/server.pid
+FILE=/usr/src/project/tmp/pids/server.pid
 
 if test -f "$FILE"; then
     echo "Removing $FILE"
     rm -f $FILE
 fi
 
-YARN=/usr/src/app/bin/yarn
+BIN_DIR=/usr/src/project/bin
 
-if test -f "/usr/src/app/bin/yarn"; then
-	echo "chmod on /usr/src/app/bin"
-	chmod +x /usr/src/app/bin/*
+if -d BIN_DIR; then
+	echo "chmod +x on /usr/src/project/bin"
+	chmod +x /usr/src/project/bin/*
 fi
 
 
