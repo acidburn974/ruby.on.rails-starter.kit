@@ -13,7 +13,7 @@ BIN_DIR=/usr/src/project/bin
 
 if [ -d "$BIN_DIR" ]; then
 	echo "chmod +x on $BIN_DIR"
-	chmod +x $BIN_DIR/bin/*
+	chmod +x $BIN_DIR/*
 fi
 
 
