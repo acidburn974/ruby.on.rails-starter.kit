@@ -4,12 +4,18 @@ volumes:
   gem_home:
 
 networks:
+  # network used to join internal services
   web:
     external: true
+  # network dedicated to database access
   database:
     external: true
 
 services:
+  # Setup rails service online.
+  # Rails access web and database networks
+  # Databse is external and available trough the "database" network
+  # Internet joins rails app trough "web" network beforge getting on nginx frontal
   rails:
     build:
       context: '.'
@@ -25,16 +31,33 @@ services:
       - web
       - database
 
+  # Change "project" your domain (or to your own project).
+  # Here we use nginx as front-end behind traefik.
+  # SSL/TLS are managed by traefik using "le" resolver.
   nginx:
     image: nginx:1.18
     restart: unless-stopped
     labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=web"
-      - "traefik.port=80"
-      - "traefik.entryPoint=http"
-      - "traefik.backend=nginx"
-      - "traefik.frontend.rule=Host:myrootdomain.com"
+      # Explicitly tell Traefik to expose this container
+      - traefik.enable=true
+      - traefik.docker.network=web
+      # HTTPS
+      - traefik.http.services.project-service-secure.loadbalancer.server.port=80
+      - traefik.http.routers.project-secure.service=project-service-secure
+      - traefik.http.routers.project-secure.entrypoints=websecure
+      - traefik.http.routers.project-secure.rule=Host(`projet.tld`, `www.projet.tld`)
+      - traefik.http.middlewares.project-secure-cache.compress=true
+      # certbot resolver
+      - traefik.http.routers.project-secure.tls.certresolver=le
+      # HTTP
+      - traefik.http.services.project-service-insecure.loadbalancer.server.port=80
+      - traefik.http.routers.project-insecure.service=project-service-insecure
+      - traefik.http.routers.project-insecure.entrypoints=web
+      - traefik.http.routers.project-insecure.rule=Host(`projet.tld`, `www.projet.tld`)
+      - traefik.http.middlewares.project-insecure-cache.compress=true
+      - traefik.http.routers.traefik.tls=true
+      # certbot resolver
+      - traefik.http.routers.traefik.tls.certresolver=le
     volumes:
       - ./data/nginx/:/etc/nginx/conf.d/
       - ./data/project:/usr/src/project
