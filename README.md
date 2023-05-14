@@ -1,16 +1,27 @@
 # Ruby on rails boilerplate inside Docker container
 This repository contains a ruby on rails boilerplate
 to develop projects inside Docker containers on 
-any OS. Is  
+any OS.
+
+It works using MariaDB as local database, NGINX as a web front-end and 
+Ruby on Rails as applicative framework.
 
 ## Setup a new rails project
 This part describe how to setup a rails project 
 manually or using a script.
 
-Setup manually:
+1. Copy .env.example to .env and edit it.
+2. Run installer (using script or manually)
+3. Enjoy!
+
+### Manual setup :
+
 ```
 docker-compose run rails bash -c "rails new -f --database=mysql /usr/src/project"
 ```
+
+
+### Automated setup :
 
 Setup using included script:
 ```
